@@ -8,6 +8,6 @@ package datos;
  *
  * @author Cole
  */
-public class DataLayer {
-    
+public abstract class DataLayer {
+    public abstract Object getData();
 }

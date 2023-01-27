@@ -5,6 +5,8 @@
 
 package aplicacion;
 
+import datos.ImportarDAO;
+
 /**
  *
  * @author Cole
@@ -12,6 +14,8 @@ package aplicacion;
 public class M06uf1pracma {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        
+        ImportarDAO objeto = new ImportarDAO();
+        objeto.getData();
     }
 }
