@@ -11,14 +11,24 @@ import presentacion.PresentationLayer;
  *
  * @author Cole
  */
-public class LogicLayer {
+public abstract class LogicLayer {
+    //Capa de Presentación
     protected PresentationLayer presentation;
+    //Capa de datos
     protected DataLayer data;
 
+    /**
+     * Constructor que inicializa la capa de datos y la capa de presentación
+     * @param presentation Capa de presentación
+     * @param data Capa de datos
+     */
     public LogicLayer(PresentationLayer presentation, DataLayer data) {
         this.presentation = presentation;
         this.data = data;
     }
     
-    
+    /**
+     * Función utilizada para procesar los datos
+     */
+    public abstract void processData();
 }
