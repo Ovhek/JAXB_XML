@@ -18,8 +18,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Sacrificio implements Serializable {
 
     public Sacrificio(){}
-    
-    public Sacrificio(String codRegaMatadero, int codProvincia, String provincia, int codMunicipio, String municipio, String fechaSacrificio, String fechaMovimientoAMatadero, String idMovimiento, String ueln, int codEspecie, String especie, String codSexo, String sexo, String codRaza, String raza, String fechaNacimiento, int codPaisNacimiento, String paisNacimiento, String fechaMuerte, String codAptitudConsumo, String aptitudConsumo, String idElectronica, String fechaIdentifiacion, String nombreNacimiento, String codCapa, String capa, String codOrientacion, String orientacion) {
+
+    public Sacrificio(String codRegaMatadero, int codProvincia, String provincia, int codMunicipio, String municipio, String fechaSacrificio, String fechaMovimientoAMatadero, String idMovimiento, String ueln, int codEspecie, String especie, String codSexo, String sexo, String codRaza, String raza, String fechaNacimiento, int codPaisNacimiento, String paisNacimiento, String fechaMuerte, String codAptitudConsumo, String aptitudConsumo, String idElectronica, String fechaIdentifiacion, String nombreNacimiento, String nombreComercial, String codCapa, String capa, String codOrientacion, String orientacion) {
         this.codRegaMatadero = codRegaMatadero;
         this.codProvincia = codProvincia;
         this.provincia = provincia;
@@ -44,12 +44,21 @@ public class Sacrificio implements Serializable {
         this.idElectronica = idElectronica;
         this.fechaIdentifiacion = fechaIdentifiacion;
         this.nombreNacimiento = nombreNacimiento;
+        this.nombreComercial = nombreComercial;
         this.codCapa = codCapa;
         this.capa = capa;
         this.codOrientacion = codOrientacion;
         this.orientacion = orientacion;
     }
 
+    public String getNombreComercial() {
+        return nombreComercial;
+    }
+
+    public void setNombreComercial(String nombreComercial) {
+        this.nombreComercial = nombreComercial;
+    }
+    
     public String getCodRegaMatadero() {
         return codRegaMatadero;
     }
@@ -345,6 +354,9 @@ public class Sacrificio implements Serializable {
     
     @XmlElement(name = "NOMBRE_NACIMIENTO")
     private String nombreNacimiento;
+    
+    @XmlElement(name = "NOMBRE_COMERCIAL")
+    private String nombreComercial;
     
     @XmlElement(name = "COD_CAPA")
     private String codCapa;

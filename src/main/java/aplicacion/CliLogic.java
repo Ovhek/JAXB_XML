@@ -4,12 +4,23 @@
  */
 package aplicacion;
 
+import aplicacion.model.Sacrificio;
+import aplicacion.model.SacrificioPadre;
 import datos.DataLayer;
+import datos.ImportarDAO;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.xml.bind.JAXBException;
 import org.apache.commons.cli.CommandLine;
 import presentacion.CliPresentationLayer;
 import presentacion.PresentationLayer;
+import presentacion.VigenerePresentation;
 
 /**
  * Clase encargada de la lógica de los comandos
@@ -23,9 +34,9 @@ public class CliLogic extends LogicLayer {
     }
 
     /**
-     * Función encargada de procesar los datos obtenidos del dataLayer. 
-     * Dependiendo del comando que se ha utilizado, se comprueba su longitud 
-     * de argumentos y se ejecuta la función encargada de la lógica de ese comando.
+     * Función encargada de procesar los datos obtenidos del dataLayer.
+     * Dependiendo del comando que se ha utilizado, se comprueba su longitud de
+     * argumentos y se ejecuta la función encargada de la lógica de ese comando.
      */
     @Override
     public void processData() {
@@ -104,6 +115,46 @@ public class CliLogic extends LogicLayer {
         String columnaOrdenacion = cmd.getOptionValue("c");
 
         //Lógica
+        ImportarDAO datos = new ImportarDAO();
+        SacrificioPadre xmlAsObject = (SacrificioPadre) datos.getData();
+        String availableOrderColumns = "";
+
+        //Obtenemos el nombre de los fields de sacrificio
+        for (Field field : Sacrificio.class.getDeclaredFields()) {
+            availableOrderColumns += field.getName() + "\n";
+        }
+
+        Pattern p = Pattern.compile("\\b"+columnaOrdenacion+"\\b");
+        Matcher m = p.matcher(availableOrderColumns);
+        
+        if (!m.find()) {
+            System.out.println("Columna de ordenación no válida. Las columnas de ordenación válidas son:");
+            System.out.println(availableOrderColumns);
+            System.exit(0);
+        }
+
+        Export export = new Export();
+        columnaOrdenacion = columnaOrdenacion.substring(0, 1).toUpperCase() + columnaOrdenacion.substring(1);
+
+        try {
+            switch (formatoSalida.toUpperCase()) {
+                case "XML":
+                    export.exportXML(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    break;
+                case "CSV":
+                    export.exportCSV(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    break;
+                case "CSVXML", "XMLCSV":
+                    export.exportCSVXML(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    break;
+
+                default:
+                    System.out.println("Argumento de Exportación no válido. (CSV,XML, CSVXML)");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        System.out.println("Exportado con éxito. Ruta: " + new File(directorioSalida).getAbsolutePath());
     }
 
     /**
@@ -118,7 +169,25 @@ public class CliLogic extends LogicLayer {
         String directorioSalida = cmd.getOptionValue("o");
         String directorioEntrada = cmd.getOptionValue("i");
 
+        VigenerePresentation vigPresentation = new VigenerePresentation();
+
+        //Longitud mayor a 1
+        if (clave.length() <= 1) {
+            vigPresentation.printVigenereLengthOne();
+        }
+
+        //Comprobamos que la clave no sea el mismo caracter repetido --> Ej: aaaa
+        if (Pattern.matches("^(.)\\1+$", clave)) {
+            vigPresentation.printVigenereSameCharactersInKey();
+        }
         //Lógica
+        try {
+            Vigenere.encryptFile(clave, directorioEntrada, directorioSalida);
+            vigPresentation.displayData(directorioSalida);
+        } catch (IOException ex) {
+            System.out.println("Ha ocurrido un error: " + ex.getMessage());
+        }
+
     }
 
     /**
@@ -133,7 +202,25 @@ public class CliLogic extends LogicLayer {
         String directorioSalida = cmd.getOptionValue("o");
         String directorioEntrada = cmd.getOptionValue("i");
 
+        VigenerePresentation vigPresentation = new VigenerePresentation();
+
+        //Longitud mayor a 1
+        if (clave.length() <= 1) {
+            vigPresentation.printVigenereLengthOne();
+        }
+
+        //Comprobamos que la clave no sea el mismo caracter repetido --> Ej: aaaa
+        if (Pattern.matches("^(.)\\1+$", clave)) {
+            vigPresentation.printVigenereSameCharactersInKey();
+        }
+
         //Lógica
+        try {
+            Vigenere.decryptFile(clave, directorioEntrada, directorioSalida);
+            vigPresentation.displayData(directorioSalida);
+        } catch (IOException ex) {
+            System.out.println("Ha ocurrido un error: " + ex.getMessage());
+        }
     }
 
     /**
