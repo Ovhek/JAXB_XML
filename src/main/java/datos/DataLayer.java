@@ -5,9 +5,9 @@
 package datos;
 
 /**
- *
+ * Capa de datos
  * @author Cole
  */
 public abstract class DataLayer {
-    public abstract Object getData();
+    public abstract Object getData() throws Exception;
 }

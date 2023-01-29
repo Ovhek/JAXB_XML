@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * Clase de la entidad Row el xml
  */
 @XmlRootElement(name = "Row")
