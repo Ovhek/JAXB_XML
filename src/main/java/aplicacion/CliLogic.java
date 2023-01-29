@@ -5,11 +5,14 @@
 package aplicacion;
 
 import datos.DataLayer;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.apache.commons.cli.CommandLine;
 import presentacion.CliPresentationLayer;
 import presentacion.PresentationLayer;
+import presentacion.VigenerePresentation;
 
 /**
  * Clase encargada de la lógica de los comandos
@@ -117,8 +120,22 @@ public class CliLogic extends LogicLayer {
         String clave = cmd.getOptionValue("k");
         String directorioSalida = cmd.getOptionValue("o");
         String directorioEntrada = cmd.getOptionValue("i");
-
+        
+        VigenerePresentation vigPresentation = new VigenerePresentation();
+        
+        //Longitud mayor a 1
+        if(clave.length() <= 1) vigPresentation.printVigenereLengthOne();
+        
+        //Comprobamos que la clave no sea el mismo caracter repetido --> Ej: aaaa
+        if(Pattern.matches("^(.)\\1+$", clave)) vigPresentation.printVigenereSameCharactersInKey();
         //Lógica
+        try {
+            Vigenere.encryptFile(clave, directorioEntrada, directorioSalida);
+            vigPresentation.displayData(directorioSalida);
+        } catch (IOException ex) {
+            System.out.println("Ha ocurrido un error: " + ex.getMessage());
+        }
+        
     }
 
     /**
@@ -133,7 +150,21 @@ public class CliLogic extends LogicLayer {
         String directorioSalida = cmd.getOptionValue("o");
         String directorioEntrada = cmd.getOptionValue("i");
 
+        VigenerePresentation vigPresentation = new VigenerePresentation();
+        
+        //Longitud mayor a 1
+        if(clave.length() <= 1) vigPresentation.printVigenereLengthOne();
+        
+        //Comprobamos que la clave no sea el mismo caracter repetido --> Ej: aaaa
+        if(Pattern.matches("^(.)\\1+$", clave)) vigPresentation.printVigenereSameCharactersInKey();
+        
         //Lógica
+        try {
+            Vigenere.decryptFile(clave, directorioEntrada, directorioSalida);
+            vigPresentation.displayData(directorioSalida);
+        } catch (IOException ex) {
+            System.out.println("Ha ocurrido un error: " + ex.getMessage());
+        }
     }
 
     /**
