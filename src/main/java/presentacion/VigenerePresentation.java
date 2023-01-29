@@ -4,6 +4,8 @@
  */
 package presentacion;
 
+import java.io.File;
+
 /**
  *
  * @author Cole
@@ -12,7 +14,7 @@ public class VigenerePresentation extends PresentationLayer{
 
     @Override
     public void displayData(Object data) {
-        System.out.println("Comando ejecutado correctamente. Se ha creado el nuevo archivo en la ruta: "+ data.toString());
+        System.out.println("Comando ejecutado correctamente. Se ha creado el nuevo archivo en la ruta: "+ new File(data.toString()).getAbsolutePath());
         System.exit(0);
     }
     
