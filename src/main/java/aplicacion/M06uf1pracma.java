@@ -5,6 +5,7 @@
 
 package aplicacion;
 
+import datos.ImportarDAO;
 import Utils.CliManager;
 import Utils.ErrorMessagesHelpers;
 import datos.CliDataLayer;
@@ -28,6 +29,8 @@ public class M06uf1pracma {
      */
     public static void main(String[] args) {
         
+        ImportarDAO objeto = new ImportarDAO();
+        objeto.getData();
         CliManager manager = new CliManager();
         CliPresentationLayer presentation = new CliPresentationLayer();
         
@@ -51,6 +54,5 @@ public class M06uf1pracma {
         CliDataLayer data = new CliDataLayer(args, options);
         CliLogic logic = new CliLogic(presentation, data);
         logic.processData();
-        
     }
 }
