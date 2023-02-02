@@ -46,10 +46,13 @@ public class CliLogic extends LogicLayer {
             if (cmd.getArgs().length == 0) {
                 presentation.printCommandHelp(new IllegalArgumentException("No se han especificado las opciones del comando de forma correcta."));
             }
+            if(cmd.hasOption("h")){
+                presentation.printCommandHelp();
+            }
             //Comprobar el primer argumento --> report, export, import, decrypt o encrypt
             switch (cmd.getArgs()[0]) {
                 case "report" -> {
-                    if (cmd.getOptions().length < 3) {
+                    if (cmd.getOptions().length < 4) {
                         presentation.printCommandHelp(new IllegalArgumentException("No se han especificado las opciones del comando de forma correcta."));
                     }
                     manageReportCommand(cmd);
@@ -113,7 +116,7 @@ public class CliLogic extends LogicLayer {
         String formatoSalida = cmd.getOptionValue("f");
         String directorioSalida = cmd.getOptionValue("o");
         String columnaOrdenacion = cmd.getOptionValue("c");
-
+        String sortOrder = cmd.getOptionValue("s");
         //Lógica
         ImportarDAO datos = new ImportarDAO();
         SacrificioPadre xmlAsObject = (SacrificioPadre) datos.getData();
@@ -139,13 +142,13 @@ public class CliLogic extends LogicLayer {
         try {
             switch (formatoSalida.toUpperCase()) {
                 case "XML":
-                    export.exportXML(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    export.exportXML(directorioSalida, columnaOrdenacion, xmlAsObject,sortOrder);
                     break;
                 case "CSV":
-                    export.exportCSV(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    export.exportCSV(directorioSalida, columnaOrdenacion, xmlAsObject,sortOrder);
                     break;
                 case "CSVXML", "XMLCSV":
-                    export.exportCSVXML(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    export.exportCSVXML(directorioSalida, columnaOrdenacion, xmlAsObject,sortOrder);
                     break;
 
                 default:

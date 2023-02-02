@@ -12,6 +12,17 @@ import org.apache.commons.cli.Options;
  */
 public abstract class ErrorMessagesHelpers {
 
+     /**
+     * Función encargada de mostrar el mensaje de ayuda de un comando.
+     * @param options Opciones del comando
+     * @param command Comando en cuestión
+     */
+    public static void printCommandHelp(Options options,String command) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(command, options);
+        System.exit(0);
+    }
+    
     /**
      * Función encargada de mostrar el mensaje de ayuda de un comando.
      * @param options Opciones del comando
@@ -21,8 +32,7 @@ public abstract class ErrorMessagesHelpers {
         HelpFormatter formatter = new HelpFormatter();
         System.out.println("El comando se ha utilizado de forma incorrecta.");
         System.out.println(e.getMessage());
-        formatter.printHelp(command, options);
-        System.exit(0);
+        printCommandHelp(options, command);
     }
     /**
      * Función encargada de mostrar la ayuda de los comandos principales.

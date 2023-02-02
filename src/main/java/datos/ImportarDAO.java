@@ -13,7 +13,7 @@ import javax.xml.bind.Unmarshaller;
 
 /**
  *
- * @author Cole
+ * Clase encargada de importar el archivo xml.
  */
 public class ImportarDAO extends DataLayer {
     

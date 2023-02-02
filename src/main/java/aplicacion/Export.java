@@ -31,23 +31,34 @@ public class Export {
      * @return Objeto de tipo SacrificioPadre con la lista ordenada
      * @throws NoSuchMethodException 
      */
-    public SacrificioPadre sort(SacrificioPadre data, String columnToOrderBy) throws NoSuchMethodException{
+    public SacrificioPadre sort(SacrificioPadre data, String columnToOrderBy, String sortOrder) throws NoSuchMethodException{
         //Listado de sacrificios
         List<Sacrificio> sacrificios = data.getSacrificios();
 
         //Obtenemos el metodo sobre el cual ordenar
         Method getterMethod = Sacrificio.class.getMethod("get" + columnToOrderBy);
 
-        //Hacemos un sort de la lista con el metodo que hemos proporcionado
-        sacrificios.sort(Comparator.comparing(d -> {
+        //Ascending por defecto.
+        Comparator comparatorAscending = Comparator.comparing(d -> {
             try {
                 return (Comparable) getterMethod.invoke(d);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 System.out.println("Error: " + e.getMessage());
                 return null;
             }
-        }));
+        });
         
+        //Descending 
+        Comparator comparatorDescending = comparatorAscending.reversed();
+        
+        //Hacemos un sort de la lista con el metodo que hemos proporcionado
+        if (sortOrder.equalsIgnoreCase("descending")) {
+            sacrificios.sort(comparatorDescending);
+        }
+        else{
+            sacrificios.sort(comparatorAscending);
+        }
+
         //Creamos un nuevo objeto jaxb de tipo SacrifioPadre y le añadimos la lista ordenada
         SacrificioPadre sortedData = new SacrificioPadre();
         sortedData.setSacrificios((ArrayList<Sacrificio>) sacrificios);
@@ -67,8 +78,8 @@ public class Export {
      * @throws IllegalArgumentException
      * @throws IllegalAccessException 
      */
-    public void exportCSV(String outputPath, String columnToOrderBy, SacrificioPadre data) throws NoSuchMethodException, JAXBException, IOException, InvocationTargetException, IllegalArgumentException, IllegalAccessException{
-        SacrificioPadre sortedData = sort(data, columnToOrderBy);
+    public void exportCSV(String outputPath, String columnToOrderBy, SacrificioPadre data, String sortOrder) throws NoSuchMethodException, JAXBException, IOException, InvocationTargetException, IllegalArgumentException, IllegalAccessException{
+        SacrificioPadre sortedData = sort(data, columnToOrderBy,sortOrder);
         
         //Creamos el archivo de salida
         File outputFileCSV = new File(outputPath + ".csv");
@@ -117,8 +128,8 @@ public class Export {
      * @throws IllegalArgumentException
      * @throws IllegalAccessException 
      */
-    public void exportXML(String outputPath, String columnToOrderBy, SacrificioPadre data) throws NoSuchMethodException, JAXBException, IOException, InvocationTargetException, IllegalArgumentException, IllegalAccessException{
-        SacrificioPadre sortedData = sort(data, columnToOrderBy);
+    public void exportXML(String outputPath, String columnToOrderBy, SacrificioPadre data, String sortOrder) throws NoSuchMethodException, JAXBException, IOException, InvocationTargetException, IllegalArgumentException, IllegalAccessException{
+        SacrificioPadre sortedData = sort(data, columnToOrderBy,sortOrder);
         File outputFileXML = new File(outputPath + ".xml");
         
         //Creamos el contexto jaxb y el marshaller
@@ -140,10 +151,10 @@ public class Export {
      * @throws IllegalArgumentException
      * @throws IllegalAccessException 
      */
-    public void exportCSVXML(String outputPath, String columnToOrderBy, SacrificioPadre data) throws NoSuchMethodException, JAXBException, IOException, InvocationTargetException, IllegalArgumentException, IllegalAccessException {
-        SacrificioPadre sortedData = sort(data, columnToOrderBy);
-        exportCSV(outputPath, columnToOrderBy, data);
-        exportXML(outputPath, columnToOrderBy, data);
+    public void exportCSVXML(String outputPath, String columnToOrderBy, SacrificioPadre data, String sortOrder) throws NoSuchMethodException, JAXBException, IOException, InvocationTargetException, IllegalArgumentException, IllegalAccessException {
+        SacrificioPadre sortedData = sort(data, columnToOrderBy,sortOrder);
+        exportCSV(outputPath, columnToOrderBy, data, sortOrder);
+        exportXML(outputPath, columnToOrderBy, data, sortOrder);
 
     }
 }
