@@ -6,6 +6,8 @@ package presentacion;
 
 import Utils.ErrorMessagesHelpers;
 import aplicacion.LogicLayer;
+import aplicacion.model.Sacrificio;
+import java.util.List;
 import org.apache.commons.cli.Options;
 
 /**
@@ -51,6 +53,13 @@ public class CliPresentationLayer extends PresentationLayer{
      */
     public void printMainHelper(){
         ErrorMessagesHelpers.printMainHelper();
+    }
+    
+    public void printElementos(List<Sacrificio> elementosFiltrados){
+    
+        for (int i = 0; i < elementosFiltrados.size()-1 ; i++) {
+                System.out.println(elementosFiltrados.get(i).toString());
+            }
     }
 
     @Override

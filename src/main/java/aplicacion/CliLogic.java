@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,7 @@ public class CliLogic extends LogicLayer {
     @Override
     public void processData() {
         CliPresentationLayer presentation = (CliPresentationLayer) this.presentation;
+        
         try {
             CommandLine cmd = (CommandLine) data.getData();
             if (cmd.getArgs().length == 0) {
@@ -280,8 +282,61 @@ public class CliLogic extends LogicLayer {
         //Obtención de datos
         String elementoABuscar = cmd.getOptionValue("elemento");
         String nombreElementoABuscar = cmd.getOptionValue("nombre");
-
+        String elementosDisponibles = "";
         //Lógica
+        ImportarDAO valores = new ImportarDAO();
+        SacrificioPadre xmlAsObject = (SacrificioPadre) valores.getData();
+        List<Sacrificio> listaElementos = xmlAsObject.getSacrificios();
+        
+        //Obtenemos el nombre de los fields de sacrificio
+        for (Field field : Sacrificio.class.getDeclaredFields()) {
+            elementosDisponibles += field.getName() + "\n";
+        }
+        
+        /* Creamos una expresion regular que me busque en el string de elementos disponibles
+           los elementos que hay en sacrificio, y si coincide con el elemento que pasa el
+           usuario se continua, si no existe se manda un mensaje de error y se muestran los disponibles
+        */
+        
+        Pattern p = Pattern.compile("\\b"+elementoABuscar+"\\b");
+        Matcher m = p.matcher(elementosDisponibles);
+        
+        if (!m.find()) {
+            System.out.println("Elemento no encontrado. Los elementos que existen son los siguientes:");
+            System.out.println(elementosDisponibles);
+            System.exit(0);
+        }
+        
+        /* Una vez tenemos el elemento buscaremos de ese elemento si el nombre que hay existe 
+           y lo mostraremos por pantalla
+        */
+        String primerCaracter = elementoABuscar.substring(0,1).toUpperCase();
+        try {
+            
+            //Creamos una variable de tipo method a la que le podremos hacer un invoke pasandole el objeto que queramos
+            Method getElemento = listaElementos.get(0).getClass().getMethod("get" + primerCaracter + elementoABuscar.substring(1));
+            
+            //Creamos un filtro que 
+            List<Sacrificio> elementosFiltrados = listaElementos.stream().filter(e -> {
+                try { 
+                    //hacemos una comprobacion de si el getter que invocamos es igual a el paramaetro que buscamos 
+                    //y lo añade si esta
+                    return getElemento.invoke(e).equals(nombreElementoABuscar);
+                } catch (Exception ex) {
+                    //devolvemos false para que no pete el invoke
+                    return false;
+                }
+            }).toList();
+            
+            //Imprimimos los objetos filtrados que coincidan con lo buscado por el usuario
+            CliPresentationLayer mostrarElementos = new CliPresentationLayer();
+            mostrarElementos.printElementos(elementosFiltrados);
+            
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        }
+        
     }
 
 }

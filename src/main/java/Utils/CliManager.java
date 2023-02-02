@@ -5,8 +5,6 @@
 package Utils;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
@@ -91,9 +89,9 @@ public class CliManager {
         
         // Buscar
         searchOptions = new Options();
-        searchOptions.addOption("elemento", true, "Elemento a buscar");
-        searchOptions.addOption("nombre", true, "Nombre del elemento a buscar");
         searchOptions.addOption("h","help",false,"Ayuda sobre el comando");
+        searchOptions.addOption("e","elemento", true, "Elemento a buscar");
+        searchOptions.addOption("n","nombre", true, "Nombre del elemento a buscar");
     }
     
     /**
