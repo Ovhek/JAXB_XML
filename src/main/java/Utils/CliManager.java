@@ -69,9 +69,8 @@ public class CliManager {
         
         // Reporte
         reportOptions = new Options();  
-        reportOptions.addOption("opcion_exportar", true, "Opción de exportación");
-        reportOptions.addOption("directorio", true, "Directorio de Exportación");
-        reportOptions.addOption("tipo_informe", true, "Tipo de informe");
+        reportOptions.addOption("e","directorio_exportar", true, "Opción de exportación");
+        reportOptions.addOption("t","tipo_informe", true, "Tipo de informe");
         
         //Encriptar
         encryptOptions = new Options();

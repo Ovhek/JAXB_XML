@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -49,9 +50,10 @@ public class CliLogic extends LogicLayer {
             //Comprobar el primer argumento --> report, export, import, decrypt o encrypt
             switch (cmd.getArgs()[0]) {
                 case "report" -> {
-                    if (cmd.getOptions().length < 3) {
+                    if (cmd.getOptions().length < 1) {
                         presentation.printCommandHelp(new IllegalArgumentException("No se han especificado las opciones del comando de forma correcta."));
                     }
+
                     manageReportCommand(cmd);
                 }
                 case "export" -> {
@@ -96,10 +98,34 @@ public class CliLogic extends LogicLayer {
     private static void manageReportCommand(CommandLine cmd) {
         //Obtención de datos
         String tipoInforme = cmd.getOptionValue("tipo_informe");
-        String opcionExportar = cmd.getOptionValue("opcion_exportar");
-        String directorio = cmd.getOptionValue("directorio");
+        String opcionExportar = cmd.getOptionValue("directorio_exportar");
 
+        ImportarDAO datos = new ImportarDAO();
+        SacrificioPadre xmlAsObject = (SacrificioPadre) datos.getData();
+        List<Sacrificio> lista_sacrificio = xmlAsObject.getSacrificios();
         //Lógica
+        Report report = new Report(lista_sacrificio);
+        String informe = "";
+        switch (tipoInforme) {
+            case "0":
+                informe = report.report_0();
+                break;
+            case "1":
+                informe = report.report_1();
+                break;
+            case "2":
+                informe = report.report_2();
+                break;
+            default:
+                System.out.println("El tipo de informe seleccionado no existe, debe ser 0,1,2");
+                break;
+        }
+        System.out.println(informe);
+        if (opcionExportar != null && !opcionExportar.isBlank()) {
+                report.exportar(opcionExportar, informe);
+            
+        }
+
     }
 
     /**
@@ -124,9 +150,9 @@ public class CliLogic extends LogicLayer {
             availableOrderColumns += field.getName() + "\n";
         }
 
-        Pattern p = Pattern.compile("\\b"+columnaOrdenacion+"\\b");
+        Pattern p = Pattern.compile("\\b" + columnaOrdenacion + "\\b");
         Matcher m = p.matcher(availableOrderColumns);
-        
+
         if (!m.find()) {
             System.out.println("Columna de ordenación no válida. Las columnas de ordenación válidas son:");
             System.out.println(availableOrderColumns);
