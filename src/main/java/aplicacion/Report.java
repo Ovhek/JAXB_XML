@@ -91,11 +91,11 @@ public class Report {
             String municipio = entry.getKey();
 
             int municipio_cantidad = entry.getValue();
-            informe += municipio + " (" + municipio_cantidad + "):\n";
 
             Map<String, Integer> map_mataderos = map_munMataderos.get(municipio);
+            int cantidad_mataderosMun = map_mataderos.size();
+            informe += municipio + " (" + cantidad_mataderosMun + ") " + " (" + municipio_cantidad + "):\n";
             Iterator j = map_mataderos.entrySet().iterator();
-
             while (j.hasNext()) {
 
                 Map.Entry<String, Integer> jentry = (Map.Entry) j.next();
@@ -142,7 +142,6 @@ public class Report {
              */
             map_municipios.put(municipio, map_municipios.getOrDefault(municipio, 0) + 1);
             String maradero = s.getCodRegaMatadero();
-
             Map<String, Integer> map_mataderos = map_munMataderos.get(municipio);
             if (map_mataderos == null) {
                 map_mataderos = new HashMap<>();
