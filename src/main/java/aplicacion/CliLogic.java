@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -29,6 +31,11 @@ import presentacion.VigenerePresentation;
  */
 public class CliLogic extends LogicLayer {
 
+    /**
+     * Constructor de la logica del CLI
+     * @param presentation capa de presentación
+     * @param data capa de datos
+     */
     public CliLogic(PresentationLayer presentation, DataLayer data) {
         super(presentation, data);
     }
@@ -41,17 +48,22 @@ public class CliLogic extends LogicLayer {
     @Override
     public void processData() {
         CliPresentationLayer presentation = (CliPresentationLayer) this.presentation;
+        
         try {
             CommandLine cmd = (CommandLine) data.getData();
             if (cmd.getArgs().length == 0) {
                 presentation.printCommandHelp(new IllegalArgumentException("No se han especificado las opciones del comando de forma correcta."));
             }
+            if(cmd.hasOption("h")){
+                presentation.printCommandHelp();
+            }
             //Comprobar el primer argumento --> report, export, import, decrypt o encrypt
             switch (cmd.getArgs()[0]) {
                 case "report" -> {
-                    if (cmd.getOptions().length < 3) {
+                    if (cmd.getOptions().length < 1) {
                         presentation.printCommandHelp(new IllegalArgumentException("No se han especificado las opciones del comando de forma correcta."));
                     }
+
                     manageReportCommand(cmd);
                 }
                 case "export" -> {
@@ -94,12 +106,49 @@ public class CliLogic extends LogicLayer {
      * @param cmd Linea de comandos
      */
     private static void manageReportCommand(CommandLine cmd) {
-        //Obtención de datos
+        //Obtención de los valores de las opciones
         String tipoInforme = cmd.getOptionValue("tipo_informe");
-        String opcionExportar = cmd.getOptionValue("opcion_exportar");
-        String directorio = cmd.getOptionValue("directorio");
+        String opcionExportar = cmd.getOptionValue("directorio_exportar");
 
+        //Importamos los datos (linea de comando y datos xml)
+        ImportarDAO datos = new ImportarDAO();
+
+        //Transformamos el fichero xml en un obejeto
+        SacrificioPadre xmlAsObject = (SacrificioPadre) datos.getData();
+
+        //Obtenemos la lista de sacrificions del objeto xml
+        List<Sacrificio> lista_sacrificio = xmlAsObject.getSacrificios();
         //Lógica
+        //Creamos un obejto reporte para trabajar con la lista de sacrificios
+        Report report = new Report(lista_sacrificio);
+        String informe = "";
+
+        //Comprovamos el tipo de informe y ejecutamos su respectiva operación
+        switch (tipoInforme) {
+            case "0":
+                informe = report.report_0();
+                break;
+            case "1":
+                informe = report.report_1();
+                break;
+            case "2":
+                informe = report.report_2();
+                break;
+            default:
+                System.out.println("El tipo de informe seleccionado no existe, debe ser 0,1,2");
+                break;
+        }
+        System.out.println(informe);
+
+        /**
+         * Comprovamos que la opcion exportar este incluida. En caso de estar
+         * incluida exportamos el informe a txt
+         */
+        if (opcionExportar != null && !opcionExportar.isBlank()) {
+            report.exportar(opcionExportar, informe);
+
+        }
+
     }
 
     /**
@@ -113,7 +162,7 @@ public class CliLogic extends LogicLayer {
         String formatoSalida = cmd.getOptionValue("f");
         String directorioSalida = cmd.getOptionValue("o");
         String columnaOrdenacion = cmd.getOptionValue("c");
-
+        String sortOrder = cmd.getOptionValue("s");
         //Lógica
         ImportarDAO datos = new ImportarDAO();
         SacrificioPadre xmlAsObject = (SacrificioPadre) datos.getData();
@@ -124,9 +173,9 @@ public class CliLogic extends LogicLayer {
             availableOrderColumns += field.getName() + "\n";
         }
 
-        Pattern p = Pattern.compile("\\b"+columnaOrdenacion+"\\b");
+        Pattern p = Pattern.compile("\\b" + columnaOrdenacion + "\\b");
         Matcher m = p.matcher(availableOrderColumns);
-        
+
         if (!m.find()) {
             System.out.println("Columna de ordenación no válida. Las columnas de ordenación válidas son:");
             System.out.println(availableOrderColumns);
@@ -139,13 +188,13 @@ public class CliLogic extends LogicLayer {
         try {
             switch (formatoSalida.toUpperCase()) {
                 case "XML":
-                    export.exportXML(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    export.exportXML(directorioSalida, columnaOrdenacion, xmlAsObject,sortOrder);
                     break;
                 case "CSV":
-                    export.exportCSV(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    export.exportCSV(directorioSalida, columnaOrdenacion, xmlAsObject,sortOrder);
                     break;
                 case "CSVXML", "XMLCSV":
-                    export.exportCSVXML(directorioSalida, columnaOrdenacion, xmlAsObject);
+                    export.exportCSVXML(directorioSalida, columnaOrdenacion, xmlAsObject,sortOrder);
                     break;
 
                 default:
@@ -233,8 +282,61 @@ public class CliLogic extends LogicLayer {
         //Obtención de datos
         String elementoABuscar = cmd.getOptionValue("elemento");
         String nombreElementoABuscar = cmd.getOptionValue("nombre");
-
+        String elementosDisponibles = "";
         //Lógica
+        ImportarDAO valores = new ImportarDAO();
+        SacrificioPadre xmlAsObject = (SacrificioPadre) valores.getData();
+        List<Sacrificio> listaElementos = xmlAsObject.getSacrificios();
+        
+        //Obtenemos el nombre de los fields de sacrificio
+        for (Field field : Sacrificio.class.getDeclaredFields()) {
+            elementosDisponibles += field.getName() + "\n";
+        }
+        
+        /* Creamos una expresion regular que me busque en el string de elementos disponibles
+           los elementos que hay en sacrificio, y si coincide con el elemento que pasa el
+           usuario se continua, si no existe se manda un mensaje de error y se muestran los disponibles
+        */
+        
+        Pattern p = Pattern.compile("\\b"+elementoABuscar+"\\b");
+        Matcher m = p.matcher(elementosDisponibles);
+        
+        if (!m.find()) {
+            System.out.println("Elemento no encontrado. Los elementos que existen son los siguientes:");
+            System.out.println(elementosDisponibles);
+            System.exit(0);
+        }
+        
+        /* Una vez tenemos el elemento buscaremos de ese elemento si el nombre que hay existe 
+           y lo mostraremos por pantalla
+        */
+        String primerCaracter = elementoABuscar.substring(0,1).toUpperCase();
+        try {
+            
+            //Creamos una variable de tipo method a la que le podremos hacer un invoke pasandole el objeto que queramos
+            Method getElemento = listaElementos.get(0).getClass().getMethod("get" + primerCaracter + elementoABuscar.substring(1));
+            
+            //Creamos un filtro que 
+            List<Sacrificio> elementosFiltrados = listaElementos.stream().filter(e -> {
+                try { 
+                    //hacemos una comprobacion de si el getter que invocamos es igual a el paramaetro que buscamos 
+                    //y lo añade si esta
+                    return getElemento.invoke(e).equals(nombreElementoABuscar);
+                } catch (Exception ex) {
+                    //devolvemos false para que no pete el invoke
+                    return false;
+                }
+            }).toList();
+            
+            //Imprimimos los objetos filtrados que coincidan con lo buscado por el usuario
+            CliPresentationLayer mostrarElementos = new CliPresentationLayer();
+            mostrarElementos.printElementos(elementosFiltrados);
+            
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        }
+        
     }
 
 }

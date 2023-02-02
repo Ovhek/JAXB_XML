@@ -13,7 +13,7 @@ import javax.xml.bind.Unmarshaller;
 
 /**
  *
- * @author Cole
+ * Clase encargada de importar el archivo xml.
  */
 public class ImportarDAO extends DataLayer {
     
@@ -36,9 +36,11 @@ public class ImportarDAO extends DataLayer {
             datos = (SacrificioPadre)unmarshaller.unmarshal(stream);
             
         }catch(JAXBException e) {
-            
-            e.printStackTrace();
-            
+            System.out.println(e.getMessage());
+            System.exit(0);
+        }catch(Exception e){
+            System.out.println("Ha ocurrido un error: ¿Existe el fichero sacrificios_equino_2021.xml?");
+            System.exit(0);
         }
         return datos;  
     }

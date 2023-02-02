@@ -9,7 +9,7 @@ import presentacion.PresentationLayer;
 
 /**
  *
- * @author Cole
+ * Clase Padre de la capa lógica
  */
 public abstract class LogicLayer {
     //Capa de Presentación

@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author bhugo
  */
 
-//indiquem que  s'ha d'incloure aquesta classe com a element
+//Indicamos que se incluye esta clase como un elemento
 @XmlRootElement (name = "Rows")
 public class SacrificioPadre {
     

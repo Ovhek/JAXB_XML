@@ -369,4 +369,39 @@ public class Sacrificio implements Serializable {
     
     @XmlElement(name = "ORIENTACION")
     private String orientacion;
+    
+    @Override
+    public String toString() {
+        return "Sacrificio{" + "\n" 
+                + " codRegaMatadero: " + codRegaMatadero + "\n" 
+                + " codProvincia: " + codProvincia + "\n" 
+                + " provincia: " + provincia + "\n" 
+                + " codMunicipio: " + codMunicipio+ "\n" 
+                + " municipio: " + municipio + "\n" 
+                + " fechaSacrificio: " + fechaSacrificio + "\n" 
+                + " fechaMovimientoAMatadero: " + fechaMovimientoAMatadero + "\n" 
+                + " idMovimiento: " + idMovimiento + "\n" 
+                + " ueln: " + ueln + "\n" 
+                + " codEspecie: " + codEspecie + "\n" 
+                + " especie: " + especie + "\n" 
+                + " codSexo: " + codSexo + "\n" 
+                + " sexo: " + sexo + "\n" 
+                + " codRaza: " + codRaza + "\n" 
+                + " raza: " + raza + "\n" 
+                + " fechaNacimiento: " + fechaNacimiento + "\n" 
+                + " codPaisNacimiento: " + codPaisNacimiento + "\n" 
+                + " paisNacimiento: " + paisNacimiento + "\n" 
+                + " fechaMuerte: " + fechaMuerte + "\n" 
+                + " codAptitudConsumo: " + codAptitudConsumo + "\n" 
+                + " aptitudConsumo: " + aptitudConsumo + "\n" 
+                + " idElectronica: " + idElectronica + "\n" 
+                + " fechaIdentifiacion: " + fechaIdentifiacion + "\n" 
+                + " nombreNacimiento: " + nombreNacimiento + "\n" 
+                + " nombreComercial: " + nombreComercial + "\n" 
+                + " codCapa: " + codCapa + "\n" 
+                + " capa: " + capa + "\n" 
+                + " codOrientacion: "+ codOrientacion + "\n" 
+                + " orientacion: " + orientacion + "\n" +'}'+ "\n";
+    }
+
 }
