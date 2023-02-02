@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * Clase de la entidad Row el xml
  */
 @XmlRootElement(name = "Row")
@@ -19,8 +18,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Sacrificio implements Serializable {
 
     public Sacrificio(){}
-    
-    public Sacrificio(String codRegaMatadero, int codProvincia, String provincia, int codMunicipio, String municipio, String fechaSacrificio, String fechaMovimientoAMatadero, String idMovimiento, String ueln, int codEspecie, String especie, String codSexo, String sexo, String codRaza, String raza, String fechaNacimiento, int codPaisNacimiento, String paisNacimiento, String fechaMuerte, String codAptitudConsumo, String aptitudConsumo, String idElectronica, String fechaIdentifiacion, String nombreNacimiento, String codCapa, String capa, String codOrientacion, String orientacion) {
+
+    public Sacrificio(String codRegaMatadero, int codProvincia, String provincia, int codMunicipio, String municipio, String fechaSacrificio, String fechaMovimientoAMatadero, String idMovimiento, String ueln, int codEspecie, String especie, String codSexo, String sexo, String codRaza, String raza, String fechaNacimiento, int codPaisNacimiento, String paisNacimiento, String fechaMuerte, String codAptitudConsumo, String aptitudConsumo, String idElectronica, String fechaIdentifiacion, String nombreNacimiento, String nombreComercial, String codCapa, String capa, String codOrientacion, String orientacion) {
         this.codRegaMatadero = codRegaMatadero;
         this.codProvincia = codProvincia;
         this.provincia = provincia;
@@ -45,12 +44,21 @@ public class Sacrificio implements Serializable {
         this.idElectronica = idElectronica;
         this.fechaIdentifiacion = fechaIdentifiacion;
         this.nombreNacimiento = nombreNacimiento;
+        this.nombreComercial = nombreComercial;
         this.codCapa = codCapa;
         this.capa = capa;
         this.codOrientacion = codOrientacion;
         this.orientacion = orientacion;
     }
+ 
+    public String getNombreComercial() {
+        return nombreComercial;
+    }
 
+    public void setNombreComercial(String nombreComercial) {
+        this.nombreComercial = nombreComercial;
+    }
+    
     public String getCodRegaMatadero() {
         return codRegaMatadero;
     }
@@ -58,7 +66,7 @@ public class Sacrificio implements Serializable {
     public void setCodRegaMatadero(String codRegaMatadero) {
         this.codRegaMatadero = codRegaMatadero;
     }
-
+    
     public int getCodProvincia() {
         return codProvincia;
     }
@@ -74,7 +82,7 @@ public class Sacrificio implements Serializable {
     public void setProvincia(String provincia) {
         this.provincia = provincia;
     }
-
+    
     public int getCodMunicipio() {
         return codMunicipio;
     }
@@ -82,7 +90,7 @@ public class Sacrificio implements Serializable {
     public void setCodMunicipio(int codMunicipio) {
         this.codMunicipio = codMunicipio;
     }
-
+    
     public String getMunicipio() {
         return municipio;
     }
@@ -90,7 +98,7 @@ public class Sacrificio implements Serializable {
     public void setMunicipio(String municipio) {
         this.municipio = municipio;
     }
-
+    
     public String getFechaSacrificio() {
         return fechaSacrificio;
     }
@@ -98,7 +106,7 @@ public class Sacrificio implements Serializable {
     public void setFechaSacrificio(String fechaSacrificio) {
         this.fechaSacrificio = fechaSacrificio;
     }
-
+    
     public String getFechaMovimientoAMatadero() {
         return fechaMovimientoAMatadero;
     }
@@ -135,6 +143,7 @@ public class Sacrificio implements Serializable {
         return especie;
     }
 
+    
     public void setEspecie(String especie) {
         this.especie = especie;
     }
@@ -154,7 +163,7 @@ public class Sacrificio implements Serializable {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-
+    
     public String getCodRaza() {
         return codRaza;
     }
@@ -254,7 +263,7 @@ public class Sacrificio implements Serializable {
     public String getCapa() {
         return capa;
     }
-
+    
     public void setCapa(String capa) {
         this.capa = capa;
     }
@@ -347,6 +356,9 @@ public class Sacrificio implements Serializable {
     @XmlElement(name = "NOMBRE_NACIMIENTO")
     private String nombreNacimiento;
     
+    @XmlElement(name = "NOMBRE_COMERCIAL")
+    private String nombreComercial;
+    
     @XmlElement(name = "COD_CAPA")
     private String codCapa;
     
@@ -358,4 +370,38 @@ public class Sacrificio implements Serializable {
     
     @XmlElement(name = "ORIENTACION")
     private String orientacion;
+
+    @Override
+    public String toString() {
+        return "Sacrificio{" + "\n" 
+                + " codRegaMatadero: " + codRegaMatadero + "\n" 
+                + " codProvincia: " + codProvincia + "\n" 
+                + " provincia: " + provincia + "\n" 
+                + " codMunicipio: " + codMunicipio+ "\n" 
+                + " municipio: " + municipio + "\n" 
+                + " fechaSacrificio: " + fechaSacrificio + "\n" 
+                + " fechaMovimientoAMatadero: " + fechaMovimientoAMatadero + "\n" 
+                + " idMovimiento: " + idMovimiento + "\n" 
+                + " ueln: " + ueln + "\n" 
+                + " codEspecie: " + codEspecie + "\n" 
+                + " especie: " + especie + "\n" 
+                + " codSexo: " + codSexo + "\n" 
+                + " sexo: " + sexo + "\n" 
+                + " codRaza: " + codRaza + "\n" 
+                + " raza: " + raza + "\n" 
+                + " fechaNacimiento: " + fechaNacimiento + "\n" 
+                + " codPaisNacimiento: " + codPaisNacimiento + "\n" 
+                + " paisNacimiento: " + paisNacimiento + "\n" 
+                + " fechaMuerte: " + fechaMuerte + "\n" 
+                + " codAptitudConsumo: " + codAptitudConsumo + "\n" 
+                + " aptitudConsumo: " + aptitudConsumo + "\n" 
+                + " idElectronica: " + idElectronica + "\n" 
+                + " fechaIdentifiacion: " + fechaIdentifiacion + "\n" 
+                + " nombreNacimiento: " + nombreNacimiento + "\n" 
+                + " nombreComercial: " + nombreComercial + "\n" 
+                + " codCapa: " + codCapa + "\n" 
+                + " capa: " + capa + "\n" 
+                + " codOrientacion: "+ codOrientacion + "\n" 
+                + " orientacion: " + orientacion + '}';
+    }
 }

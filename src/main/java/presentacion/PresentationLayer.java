@@ -4,10 +4,13 @@
  */
 package presentacion;
 
+import aplicacion.LogicLayer;
+import datos.DataLayer;
+
 /**
  *
  * @author Cole
  */
-public class PresentationLayer {
-    
+public abstract class PresentationLayer {
+    public abstract void displayData(Object data);
 }
