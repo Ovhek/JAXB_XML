@@ -96,16 +96,24 @@ public class CliLogic extends LogicLayer {
      * @param cmd Linea de comandos
      */
     private static void manageReportCommand(CommandLine cmd) {
-        //Obtención de datos
+        //Obtención de los valores de las opciones
         String tipoInforme = cmd.getOptionValue("tipo_informe");
         String opcionExportar = cmd.getOptionValue("directorio_exportar");
 
+        //Importamos los datos (linea de comando y datos xml)
         ImportarDAO datos = new ImportarDAO();
+
+        //Transformamos el fichero xml en un obejeto
         SacrificioPadre xmlAsObject = (SacrificioPadre) datos.getData();
+
+        //Obtenemos la lista de sacrificions del objeto xml
         List<Sacrificio> lista_sacrificio = xmlAsObject.getSacrificios();
         //Lógica
+        //Creamos un obejto reporte para trabajar con la lista de sacrificios
         Report report = new Report(lista_sacrificio);
         String informe = "";
+
+        //Comprovamos el tipo de informe y ejecutamos su respectiva operación
         switch (tipoInforme) {
             case "0":
                 informe = report.report_0();
@@ -121,9 +129,14 @@ public class CliLogic extends LogicLayer {
                 break;
         }
         System.out.println(informe);
+
+        /**
+         * Comprovamos que la opcion exportar este incluida. En caso de estar
+         * incluida exportamos el informe a txt
+         */
         if (opcionExportar != null && !opcionExportar.isBlank()) {
-                report.exportar(opcionExportar, informe);
-            
+            report.exportar(opcionExportar, informe);
+
         }
 
     }
