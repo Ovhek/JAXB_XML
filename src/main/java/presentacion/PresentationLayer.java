@@ -8,7 +8,7 @@ import aplicacion.LogicLayer;
 import datos.DataLayer;
 
 /**
- *
+ * Capa de Presentación
  * @author Cole
  */
 public abstract class PresentationLayer {
