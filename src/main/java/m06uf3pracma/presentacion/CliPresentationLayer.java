@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package presentacion;
+package m06uf3pracma.presentacion;
 
-import Utils.ErrorMessagesHelpers;
-import aplicacion.LogicLayer;
-import aplicacion.model.Sacrificio;
+import m06uf3pracma.Utils.ErrorMessagesHelpers;
+import m06uf3pracma.aplicacion.LogicLayer;
 import java.util.List;
 import org.apache.commons.cli.Options;
 
@@ -53,17 +52,5 @@ public class CliPresentationLayer extends PresentationLayer{
      */
     public void printMainHelper(){
         ErrorMessagesHelpers.printMainHelper();
-    }
-    
-    public void printElementos(List<Sacrificio> elementosFiltrados){
-    
-        for (int i = 0; i < elementosFiltrados.size()-1 ; i++) {
-                System.out.println(elementosFiltrados.get(i).toString());
-            }
-    }
-
-    @Override
-    public void displayData(Object data) {
-        
     }
 }

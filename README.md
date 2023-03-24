@@ -1,4 +1,4 @@
-# M06UF1PracMA
+# M06UF3PracMA
 
 
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://git.copernic.cat/barrera.castillo.hugo/m06uf1pracma.git
+git remote add origin https://git.copernic.cat/practicas-de-java/m06uf3pracma.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](http://git.copernic.cat/barrera.castillo.hugo/m06uf1pracma/-/settings/integrations)
+- [ ] [Set up project integrations](http://git.copernic.cat/practicas-de-java/m06uf3pracma/-/settings/integrations)
 
 ## Collaborate with your team
 

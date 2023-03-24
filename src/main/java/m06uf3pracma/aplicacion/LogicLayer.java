@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package aplicacion;
+package m06uf3pracma.aplicacion;
 
-import datos.DataLayer;
-import presentacion.PresentationLayer;
+import m06uf3pracma.datos.DataLayer;
+import m06uf3pracma.presentacion.PresentationLayer;
 
 /**
  *
  * Clase Padre de la capa lógica
  */
-public abstract class LogicLayer {
+public abstract class LogicLayer{
     //Capa de Presentación
     protected PresentationLayer presentation;
     //Capa de datos
@@ -31,4 +31,5 @@ public abstract class LogicLayer {
      * Función utilizada para procesar los datos
      */
     public abstract void processData();
+    
 }

@@ -12,8 +12,8 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>export -h</exec.appArgs>
-                <exec.mainClass>aplicacion.M06uf1pracma</exec.mainClass>
+                <exec.appArgs>create</exec.appArgs>
+                <exec.mainClass>m06uf3pracma.aplicacion.M06uf3pracma</exec.mainClass>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -29,8 +29,8 @@
             <properties>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs>export -h</exec.appArgs>
-                <exec.mainClass>aplicacion.M06uf1pracma</exec.mainClass>
+                <exec.appArgs>create</exec.appArgs>
+                <exec.mainClass>m06uf3pracma.aplicacion.M06uf3pracma</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -47,9 +47,9 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.mainClass>aplicacion.M06uf1pracma</exec.mainClass>
+                <exec.mainClass>m06uf3pracma.aplicacion.M06uf3pracma</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs>export -h</exec.appArgs>
+                <exec.appArgs>create</exec.appArgs>
             </properties>
         </action>
     </actions>

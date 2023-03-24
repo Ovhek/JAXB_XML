@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Utils;
+package m06uf3pracma.Utils;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -10,43 +10,50 @@ import org.apache.commons.cli.ParseException;
 
 /**
  * Clase Singleton encargada de manejar las opciones de la línea de comandos.
+ *
  * @author Cole
  */
 public class CliManager {
+
     //Opciones de los comandos
-    private Options exportOptions;
-    private Options reportOptions;
-    private Options encryptOptions;
-    private Options decryptOptions;
-    private Options searchOptions;
+    private Options createOptions;
+    private Options dropOptions;
+    private Options pushOptions;
+    private Options pullOptions;
+    private Options compareOptions;
+    private Options cloneOptions;
 
-    public Options getExportOptions() {
-        return exportOptions;
+    public Options getCreateOptions() {
+        return createOptions;
     }
 
-    public Options getReportOptions() {
-        return reportOptions;
+    public Options getDropOptions() {
+        return dropOptions;
     }
 
-    public Options getEncryptOptions() {
-        return encryptOptions;
+    public Options getPushOptions() {
+        return pushOptions;
     }
 
-    public Options getDecryptOptions() {
-        return decryptOptions;
+    public Options getPullOptions() {
+        return pullOptions;
     }
 
-    public Options getSearchOptions() {
-        return searchOptions;
+    public Options getCompareOptions() {
+        return compareOptions;
+    }
+
+    public Options getCloneOptions() {
+        return cloneOptions;
     }
 
     public CommandLine getCmd() {
         return cmd;
     }
-    
+
     //Línea de comandos con las opciones
     private CommandLine cmd;
-    
+
     /**
      * Constructor que instancia las opciones de los comandos.
      */
@@ -54,10 +61,26 @@ public class CliManager {
         cmd = null;
         addAllOptions();
     }
+
     
     /**
-     * Función encargada de asginar las opciones de los comandos.
+     * Funcición encargada de cargar todos los comandos
      */
+    private void addAllOptions() {
+        createOptions = new CreateOptions().loadOptions();
+        dropOptions = new DropOptions().loadOptions();
+        pushOptions = new PushOptions().loadOptions();
+        pullOptions = new PullOptions().loadOptions();
+        compareOptions = new CompareOptions().loadOptions();
+        cloneOptions = new CloneOptions().loadOptions();
+
+    }
+
+    /**
+     * Ejemplos de como añadir comandos
+     */
+
+    /*
     private void addAllOptions() {
         exportOptions = new Options();        
         //Exportar
@@ -93,14 +116,15 @@ public class CliManager {
         searchOptions.addOption("e","elemento", true, "Elemento a buscar");
         searchOptions.addOption("n","nombre", true, "Nombre del elemento a buscar");
     }
-    
+     */
     /**
      * Función encargada de parsear la linea de comandos con las opciones dadas
+     *
      * @param options Las opciones que están disponibles
      * @param args Argumentos de la linea de comandos
      * @return Linea de comandos parseada
      */
-    public CommandLine parseOptions(Options options,String[] args) throws ParseException {
+    public CommandLine parseOptions(Options options, String[] args) throws ParseException {
         CliManager manager = new CliManager();
         cmd = manager.parseOptions(options, args);
         return cmd;

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package datos;
+package m06uf3pracma.datos;
 
-import Utils.CliManager;
-import Utils.ErrorMessagesHelpers;
+import m06uf3pracma.Utils.CliManager;
+import m06uf3pracma.Utils.ErrorMessagesHelpers;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

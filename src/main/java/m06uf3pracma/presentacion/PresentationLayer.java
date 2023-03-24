@@ -2,12 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package datos;
+package m06uf3pracma.presentacion;
+
+import m06uf3pracma.aplicacion.LogicLayer;
+import m06uf3pracma.datos.DataLayer;
 
 /**
- * Capa de datos
+ * Capa de Presentación
  * @author Cole
  */
-public abstract class DataLayer {
-    public abstract Object getData() throws Exception;
+public abstract class PresentationLayer {
 }
